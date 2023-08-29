@@ -4,6 +4,12 @@ from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 
+class Period:
+    def __init__(self, start, end) -> None:
+        self.end = end
+        self.start = start
+
+
 class BudgetService:
     def __init__(self, budget_repo):
         self.budget_repo = budget_repo
@@ -34,6 +40,7 @@ class BudgetService:
             return total_amount
 
     def overlapping_days(self, budget, start, end):
+        period = Period(start, end)
         if budget.year_month == start.strftime('%Y%m'):
             overlapping_end = budget.last_day()
             overlapping_start = start
