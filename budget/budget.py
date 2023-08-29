@@ -19,7 +19,6 @@ class BudgetService:
             year_month_query_days_map[start_year_month] = end.day - start.day + 1
 
         else:  # cross month
-            # year_month_query_days_map[end_year_month] = end.day
 
             current = start
             while current < end.replace(day=1) + relativedelta(months=1):
