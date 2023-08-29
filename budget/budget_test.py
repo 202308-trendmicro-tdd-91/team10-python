@@ -1,10 +1,12 @@
 import unittest
 from datetime import date
-from budget import BudgetService ,Budget
+from budget import BudgetService, Budget
+
 
 class MockedBudgetRepo:
-    def get_all():
+    def get_all(self):
         pass
+
 
 class BudgetTests(unittest.TestCase):
 
@@ -27,7 +29,6 @@ class BudgetTests(unittest.TestCase):
         self.assertEqual(budget_service.query(start, end), 100)
 
     def test_cross_month(self):
-
         mocked_budget_repo = MockedBudgetRepo()
         mocked_budget_repo.get_all = lambda: [Budget('197001', 3100), Budget('197002', 4200)]
         budget_service = BudgetService(mocked_budget_repo)
@@ -39,7 +40,6 @@ class BudgetTests(unittest.TestCase):
         self.assertEqual(budget_service.query(start, end), expected_amount)
 
     def test_cross_three_month(self):
-
         mocked_budget_repo = MockedBudgetRepo()
         mocked_budget_repo.get_all = lambda: [Budget('197001', 3100), Budget('197002', 4200), Budget('197003', 620)]
         budget_service = BudgetService(mocked_budget_repo)
@@ -48,5 +48,5 @@ class BudgetTests(unittest.TestCase):
         end = date(1970, 3, 15)
 
         expected_amount = 200 + 4200 + 300
-        
+
         self.assertEqual(budget_service.query(start, end), expected_amount)
