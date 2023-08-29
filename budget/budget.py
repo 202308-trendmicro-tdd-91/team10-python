@@ -22,13 +22,14 @@ class BudgetService:
 
             current = start
             while current < end.replace(day=1) + relativedelta(months=1):
-                if current.strftime('%Y%m') == start_year_month:
+                current_year_month = current.strftime('%Y%m')
+                if current_year_month == start_year_month:
                     year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
                                                                       1] - start.day + 1
-                elif current.strftime('%Y%m') == end_year_month:
+                elif current_year_month == end_year_month:
                     year_month_query_days_map[end_year_month] = end.day
                 else:
-                    year_month_query_days_map[current.strftime('%Y%m')] = \
+                    year_month_query_days_map[current_year_month] = \
                         calendar.monthrange(current.year, current.month)[
                             1]
                 current = current + relativedelta(months=1)
