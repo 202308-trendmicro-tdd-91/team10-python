@@ -17,6 +17,7 @@ class Period:
         else:
             overlapping_start = budget.first_day()
         overlapping_end = budget.last_day() if budget.last_day() < self.end else self.end
+        overlapping_start = budget.first_day() if budget.first_day() > self.start else self.start
         return (overlapping_end - overlapping_start).days + 1
 
 
