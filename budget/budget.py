@@ -10,8 +10,6 @@ class BudgetService:
     def _get_year_month_query_days_map(self, start, end):
         year_month_query_days_map = {}
 
-        y_months = range(start.year * 12 + start.month, end.year * 12 + end.month)
-
         # no cross month
         start_year_month = start.strftime('%Y%m')
         end_year_month = end.strftime('%Y%m')
@@ -22,6 +20,7 @@ class BudgetService:
             year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
                                                               1] - start.day + 1
 
+            y_months = range(start.year * 12 + start.month, end.year * 12 + end.month)
             if len(y_months) >= 2:
                 for ym in y_months[1:]:
                     year = int(ym / 12)
