@@ -29,13 +29,15 @@ class BudgetService:
                 filter_budgets = list(filter(lambda b: b.year_month == current_year_month, budgets))
                 if len(filter_budgets) == 0:
                     continue
+
+                budget = filter_budgets[0]
                 if current_year_month == start_year_month:
                     overlapping_days = calendar.monthrange(start.year, start.month)[1] - start.day + 1
                 elif current_year_month == end_year_month:
                     overlapping_days = end.day
                 else:
                     overlapping_days = calendar.monthrange(current.year, current.month)[1]
-                total_amount += overlapping_days * filter_budgets[0].daily_amount()
+                total_amount += overlapping_days * budget.daily_amount()
                 current = current + relativedelta(months=1)
 
             return total_amount
