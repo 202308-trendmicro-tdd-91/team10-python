@@ -71,15 +71,6 @@ class BudgetService:
 
             return total_amount
 
-        amount = 0
-        for year_month, overlapping_days in year_month_query_days_map.items():
-            filter_budgets = list(filter(lambda b: b.year_month == year_month, budgets))
-            if len(filter_budgets) == 0:
-                continue
-            amount += filter_budgets[0].daily_amount() * overlapping_days
-
-        return amount
-
 
 class Budget:
     def __init__(self, year_month, amount):
