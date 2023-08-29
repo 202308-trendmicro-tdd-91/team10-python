@@ -1,5 +1,5 @@
-from datetime import date
 import calendar
+from datetime import date, datetime
 
 from dateutil.relativedelta import relativedelta
 
@@ -32,7 +32,8 @@ class BudgetService:
 
                 budget = filter_budgets[0]
                 if current_year_month == start_year_month:
-                    overlapping_days = calendar.monthrange(start.year, start.month)[1] - start.day + 1
+                    overlapping_days = (budget.last_day() - start).days + 1
+                    # overlapping_days = calendar.monthrange(start.year, start.month)[1] - start.day + 1
                 elif current_year_month == end_year_month:
                     overlapping_days = end.day
                 else:
@@ -48,9 +49,14 @@ class Budget:
         self.year_month = year_month
         self.amount = amount
 
+    def last_day(self):
+        return datetime.strptime(self.year_month + str(self.days()), '%Y%m%d').date()
+
     def daily_amount(self):
-        number_of_day = calendar.monthrange(int(self.year_month[:4]), int(self.year_month[4:]))[1]
-        return self.amount / number_of_day
+        return self.amount / self.days()
+
+    def days(self):
+        return calendar.monthrange(int(self.year_month[:4]), int(self.year_month[4:]))[1]
 
 
 class BudgetRepo:
