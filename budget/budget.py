@@ -1,5 +1,4 @@
 from datetime import date
-from collections import defaultdict
 import calendar
 
 from dateutil.relativedelta import relativedelta
@@ -9,36 +8,8 @@ class BudgetService:
     def __init__(self, budget_repo):
         self.budget_repo = budget_repo
 
-    def _get_year_month_query_days_map(self, start, end):
-        year_month_query_days_map = {}
-
-        # no cross month
-        start_year_month = start.strftime('%Y%m')
-        end_year_month = end.strftime('%Y%m')
-        if start_year_month == end_year_month:
-            year_month_query_days_map[start_year_month] = end.day - start.day + 1
-
-        else:  # cross month
-
-            current = start
-            while current < end.replace(day=1) + relativedelta(months=1):
-                current_year_month = current.strftime('%Y%m')
-                if current_year_month == start_year_month:
-                    year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
-                                                                      1] - start.day + 1
-                elif current_year_month == end_year_month:
-                    year_month_query_days_map[end_year_month] = end.day
-                else:
-                    year_month_query_days_map[current_year_month] = \
-                        calendar.monthrange(current.year, current.month)[
-                            1]
-                current = current + relativedelta(months=1)
-
-        return year_month_query_days_map
-
     def query(self, start: date, end: date) -> float:
         budgets = self.budget_repo.get_all()
-        year_month_query_days_map = {}
         # no cross month
         start_year_month = start.strftime('%Y%m')
         end_year_month = end.strftime('%Y%m')
@@ -48,7 +19,6 @@ class BudgetService:
                 return 0
             overlapping_days = end.day - start.day + 1
             return overlapping_days * filter_budgets[0].daily_amount()
-            # year_month_query_days_map[start_year_month] = overlapping_days
 
         else:  # cross month
 
@@ -65,7 +35,6 @@ class BudgetService:
                     overlapping_days = end.day
                 else:
                     overlapping_days = calendar.monthrange(current.year, current.month)[1]
-                year_month_query_days_map[current_year_month] = overlapping_days
                 total_amount += overlapping_days * filter_budgets[0].daily_amount()
                 current = current + relativedelta(months=1)
 
