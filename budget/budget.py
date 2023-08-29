@@ -11,10 +11,8 @@ class BudgetService:
     def query(self, start: date, end: date) -> float:
         budgets = self.budget_repo.get_all()
         # no cross month
-        start_year_month = start.strftime('%Y%m')
-        end_year_month = end.strftime('%Y%m')
-        if start_year_month == end_year_month:
-            filter_budgets = list(filter(lambda b: b.year_month == start_year_month, budgets))
+        if start.strftime('%Y%m') == end.strftime('%Y%m'):
+            filter_budgets = list(filter(lambda b: b.year_month == start.strftime('%Y%m'), budgets))
             if len(filter_budgets) == 0:
                 return 0
             overlapping_days = end.day - start.day + 1
@@ -31,10 +29,10 @@ class BudgetService:
                     continue
 
                 budget = filter_budgets[0]
-                if budget.year_month == start_year_month:
+                if budget.year_month == start.strftime('%Y%m'):
                     overlapping_end = budget.last_day()
                     overlapping_start = start
-                elif budget.year_month == end_year_month:
+                elif budget.year_month == end.strftime('%Y%m'):
                     overlapping_end = end
                     overlapping_start = budget.first_day()
                 else:
