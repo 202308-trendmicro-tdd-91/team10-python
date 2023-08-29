@@ -21,6 +21,12 @@ class BudgetService:
 
     def query(self, start: date, end: date) -> float:
         budgets = self.budget_repo.get_all()
+        total_amount = 0
+        period = Period(start, end)
+        for budget in budgets:
+            total_amount += budget.overlapping_amount(period)
+
+        return total_amount
         # no cross month
         if start.strftime('%Y%m') == end.strftime('%Y%m'):
             filter_budgets = list(filter(lambda b: b.year_month == start.strftime('%Y%m'), budgets))
