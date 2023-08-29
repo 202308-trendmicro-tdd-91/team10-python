@@ -31,10 +31,10 @@ class BudgetService:
                     continue
 
                 budget = filter_budgets[0]
-                if current_year_month == start_year_month:
+                if budget.year_month == start_year_month:
                     overlapping_end = budget.last_day()
                     overlapping_start = start
-                elif current_year_month == end_year_month:
+                elif budget.year_month == end_year_month:
                     overlapping_end = end
                     overlapping_start = budget.first_day()
                 else:
