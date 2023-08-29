@@ -32,6 +32,7 @@ class BudgetService:
 
             current = start
             total_amount = 0
+            period = Period(start, end)
             while current < end.replace(day=1) + relativedelta(months=1):
                 current_year_month = current.strftime('%Y%m')
                 filter_budgets = list(filter(lambda b: b.year_month == current_year_month, budgets))
@@ -39,7 +40,6 @@ class BudgetService:
                     continue
 
                 budget = filter_budgets[0]
-                period = Period(start, end)
                 total_amount += period.overlapping_days(budget.create_period()) * budget.daily_amount()
                 current = current + relativedelta(months=1)
 
