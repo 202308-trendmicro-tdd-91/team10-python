@@ -7,16 +7,6 @@ class BudgetService:
     def __init__(self, budget_repo):
         self.budget_repo = budget_repo
 
-    def _get_year_month_daily_budget_map(self):
-        budgets = self.budget_repo.get_all()
-
-        year_month_daily_budget_map = defaultdict(lambda: 0)
-
-        for budget in budgets:
-            year_month_daily_budget_map[budget.year_month] = budget.daily_amount()
-
-        return year_month_daily_budget_map
-
     def _get_year_month_query_days_map(self, start, end):
         """
         Return:
@@ -52,10 +42,6 @@ class BudgetService:
 
     def query(self, start: date, end: date) -> float:
         budgets = self.budget_repo.get_all()
-        # budget_map = defaultdict(lambda: 0)
-        # for budget in budgets:
-        #     budget_map[budget.year_month] = budget.daily_amount()
-        # year_month_daily_budget_map = budget_map
         year_month_query_days_map = self._get_year_month_query_days_map(start, end)
 
         amount = 0
@@ -64,7 +50,6 @@ class BudgetService:
             if len(filter_budgets) == 0:
                 continue
             amount += filter_budgets[0].daily_amount() * days
-            # amount += year_month_daily_budget_map[year_month] * days
 
         return amount
 
