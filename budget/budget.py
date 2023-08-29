@@ -8,19 +8,15 @@ class BudgetService:
         self.budget_repo = budget_repo
 
     def _get_year_month_query_days_map(self, start, end):
-        """
-        Return:
-            {
-                '197001': 2,
-                '197002': 1
-            }
-        """
         year_month_query_days_map = {}
 
         y_months = range(start.year * 12 + start.month, end.year * 12 + end.month)
 
         # no cross month
-        if len(y_months) == 0:
+        start_year_month = start.strftime('%Y%m')
+        end_year_month = end.strftime('%Y%m')
+        if start_year_month == end_year_month:
+            # if len(y_months) == 0:
             year_month_query_days_map[f'{start.year}{start.month:02d}'] = end.day - start.day + 1
 
         else:  # cross month
