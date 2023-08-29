@@ -38,12 +38,12 @@ class BudgetService:
 
     def query(self, start: date, end: date) -> float:
         budgets = self.budget_repo.get_all()
-        days_map = {}
+        year_month_query_days_map = {}
         # no cross month
         start_year_month = start.strftime('%Y%m')
         end_year_month = end.strftime('%Y%m')
         if start_year_month == end_year_month:
-            days_map[start_year_month] = end.day - start.day + 1
+            year_month_query_days_map[start_year_month] = end.day - start.day + 1
 
         else:  # cross month
 
@@ -51,16 +51,15 @@ class BudgetService:
             while current < end.replace(day=1) + relativedelta(months=1):
                 current_year_month = current.strftime('%Y%m')
                 if current_year_month == start_year_month:
-                    days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
-                                                     1] - start.day + 1
+                    year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
+                                                                      1] - start.day + 1
                 elif current_year_month == end_year_month:
-                    days_map[end_year_month] = end.day
+                    year_month_query_days_map[end_year_month] = end.day
                 else:
-                    days_map[current_year_month] = \
+                    year_month_query_days_map[current_year_month] = \
                         calendar.monthrange(current.year, current.month)[
                             1]
                 current = current + relativedelta(months=1)
-        year_month_query_days_map = days_map
 
         amount = 0
         for year_month, days in year_month_query_days_map.items():
