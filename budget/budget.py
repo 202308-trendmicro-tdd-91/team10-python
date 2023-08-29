@@ -28,12 +28,6 @@ class BudgetService:
                 year_month_query_days_map[current.strftime('%Y%m')] = calendar.monthrange(current.year, current.month)[
                     1]
                 current = current + relativedelta(months=1)
-            # y_months = range(start.year * 12 + start.month, end.year * 12 + end.month)
-            # if len(y_months) >= 2:
-            #     for ym in y_months[1:]:
-            #         year = int(ym / 12)
-            #         month = ym % 12
-            #         year_month_query_days_map[f'{year}{month:02d}'] = calendar.monthrange(year, month)[1]
 
         return year_month_query_days_map
 
