@@ -19,12 +19,9 @@ class BudgetService:
             year_month_query_days_map[start_year_month] = end.day - start.day + 1
 
         else:  # cross month
-            # year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
-            #                                                   1] - start.day + 1
             year_month_query_days_map[end_year_month] = end.day
 
             current = start
-            # current = start.replace(day=1) + relativedelta(months=1)
             while current < end.replace(day=1):
                 if current.strftime('%Y%m') == start_year_month:
                     year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
