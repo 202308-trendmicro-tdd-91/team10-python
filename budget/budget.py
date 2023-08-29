@@ -13,13 +13,9 @@ class BudgetService:
         year_month_daily_budget_map = defaultdict(lambda: 0)
 
         for budget in budgets:
-            year_month_daily_budget_map[budget.year_month] = self.daily_amount(budget)
+            year_month_daily_budget_map[budget.year_month] = budget.daily_amount()
 
         return year_month_daily_budget_map
-
-    def daily_amount(self, budget):
-        number_of_day = calendar.monthrange(int(budget.year_month[:4]), int(budget.year_month[4:]))[1]
-        return budget.amount / number_of_day
 
     def _get_year_month_query_days_map(self, start, end):
         """
@@ -69,6 +65,10 @@ class Budget:
     def __init__(self, year_month, amount):
         self.year_month = year_month
         self.amount = amount
+
+    def daily_amount(self):
+        number_of_day = calendar.monthrange(int(self.year_month[:4]), int(self.year_month[4:]))[1]
+        return self.amount / number_of_day
 
 
 class BudgetRepo:
