@@ -48,6 +48,7 @@ class BudgetService:
         else:  # cross month
 
             current = start
+            total_amount = 0
             while current < end.replace(day=1) + relativedelta(months=1):
                 current_year_month = current.strftime('%Y%m')
                 filter_budgets = list(filter(lambda b: b.year_month == current_year_month, budgets))
@@ -60,7 +61,10 @@ class BudgetService:
                 else:
                     overlapping_days = calendar.monthrange(current.year, current.month)[1]
                 year_month_query_days_map[current_year_month] = overlapping_days
+                total_amount += overlapping_days * filter_budgets[0].daily_amount()
                 current = current + relativedelta(months=1)
+
+            return total_amount
 
         amount = 0
         for year_month, overlapping_days in year_month_query_days_map.items():
