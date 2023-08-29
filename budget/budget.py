@@ -43,7 +43,12 @@ class BudgetService:
         start_year_month = start.strftime('%Y%m')
         end_year_month = end.strftime('%Y%m')
         if start_year_month == end_year_month:
-            year_month_query_days_map[start_year_month] = end.day - start.day + 1
+            filter_budgets = list(filter(lambda b: b.year_month == start_year_month, budgets))
+            if len(filter_budgets) == 0:
+                return 0
+            overlapping_days = end.day - start.day + 1
+            return overlapping_days * filter_budgets[0].daily_amount()
+            # year_month_query_days_map[start_year_month] = overlapping_days
 
         else:  # cross month
 
