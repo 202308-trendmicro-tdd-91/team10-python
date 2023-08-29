@@ -19,6 +19,7 @@ class BudgetService:
         else:  # cross month
             year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
                                                               1] - start.day + 1
+            year_month_query_days_map[end_year_month] = end.day
 
             y_months = range(start.year * 12 + start.month, end.year * 12 + end.month)
             if len(y_months) >= 2:
@@ -26,8 +27,6 @@ class BudgetService:
                     year = int(ym / 12)
                     month = ym % 12
                     year_month_query_days_map[f'{year}{month:02d}'] = calendar.monthrange(year, month)[1]
-
-            year_month_query_days_map[end_year_month] = end.day
 
         return year_month_query_days_map
 
