@@ -9,7 +9,7 @@ class Period:
         self.end = end
         self.start = start
 
-    def overlapping_days(self, budget, another):
+    def overlapping_days(self, another):
         overlapping_end = another.end if another.end < self.end else self.end
         overlapping_start = another.start if another.start > self.start else self.start
         return (overlapping_end - overlapping_start).days + 1
@@ -41,7 +41,7 @@ class BudgetService:
                 budget = filter_budgets[0]
                 period = Period(start, end)
                 another = Period(budget.first_day(), budget.last_day())
-                total_amount += period.overlapping_days(budget, another) * budget.daily_amount()
+                total_amount += period.overlapping_days(another) * budget.daily_amount()
                 current = current + relativedelta(months=1)
 
             return total_amount
