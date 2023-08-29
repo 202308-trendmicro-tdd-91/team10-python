@@ -17,24 +17,18 @@ class BudgetService:
         end_year_month = end.strftime('%Y%m')
         if start_year_month == end_year_month:
             year_month_query_days_map[start_year_month] = end.day - start.day + 1
-            # year_month_query_days_map[f'{start.year}{start.month:02d}'] = end.day - start.day + 1
 
         else:  # cross month
-            # calculate first month
             year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
-                                                              # year_month_query_days_map[f'{start.year}{start.month:02d}'] = calendar.monthrange(start.year, start.month)[
                                                               1] - start.day + 1
 
-            # calculate inner month
             if len(y_months) >= 2:
                 for ym in y_months[1:]:
                     year = int(ym / 12)
                     month = ym % 12
                     year_month_query_days_map[f'{year}{month:02d}'] = calendar.monthrange(year, month)[1]
 
-            # calculate last month
             year_month_query_days_map[end_year_month] = end.day
-            # year_month_query_days_map[f'{end.year}{end.month:02d}'] = end.day
 
         return year_month_query_days_map
 
