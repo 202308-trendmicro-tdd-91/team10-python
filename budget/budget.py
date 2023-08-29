@@ -51,22 +51,22 @@ class BudgetService:
             while current < end.replace(day=1) + relativedelta(months=1):
                 current_year_month = current.strftime('%Y%m')
                 if current_year_month == start_year_month:
-                    year_month_query_days_map[start_year_month] = calendar.monthrange(start.year, start.month)[
-                                                                      1] - start.day + 1
+                    overlapping_days = calendar.monthrange(start.year, start.month)[1] - start.day + 1
+                    year_month_query_days_map[start_year_month] = overlapping_days
                 elif current_year_month == end_year_month:
-                    year_month_query_days_map[end_year_month] = end.day
+                    overlapping_days = end.day
+                    year_month_query_days_map[end_year_month] = overlapping_days
                 else:
-                    year_month_query_days_map[current_year_month] = \
-                        calendar.monthrange(current.year, current.month)[
-                            1]
+                    overlapping_days = calendar.monthrange(current.year, current.month)[1]
+                    year_month_query_days_map[current_year_month] = overlapping_days
                 current = current + relativedelta(months=1)
 
         amount = 0
-        for year_month, days in year_month_query_days_map.items():
+        for year_month, overlapping_days in year_month_query_days_map.items():
             filter_budgets = list(filter(lambda b: b.year_month == year_month, budgets))
             if len(filter_budgets) == 0:
                 continue
-            amount += filter_budgets[0].daily_amount() * days
+            amount += filter_budgets[0].daily_amount() * overlapping_days
 
         return amount
 
