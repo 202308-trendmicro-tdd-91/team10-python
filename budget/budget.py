@@ -21,13 +21,8 @@ class BudgetService:
 
     def query(self, start: date, end: date) -> float:
         budgets = self.budget_repo.get_all()
-        # total_amount = 0
         period = Period(start, end)
         return sum(map(lambda b: b.overlapping_amount(period), budgets))
-        # for budget in budgets:
-        #     total_amount += budget.overlapping_amount(period)
-        #
-        # return total_amount
 
 
 class Budget:
@@ -36,21 +31,21 @@ class Budget:
         self.amount = amount
 
     def overlapping_amount(self, period):
-        return period.overlapping_days(self.create_period()) * self.daily_amount()
+        return period.overlapping_days(self._create_period()) * self._daily_amount()
 
-    def create_period(self):
-        return Period(self.first_day(), self.last_day())
+    def _create_period(self):
+        return Period(self._first_day(), self._last_day())
 
-    def first_day(self):
+    def _first_day(self):
         return datetime.strptime(self.year_month, '%Y%m').date()
 
-    def last_day(self):
-        return datetime.strptime(self.year_month + str(self.days()), '%Y%m%d').date()
+    def _last_day(self):
+        return datetime.strptime(self.year_month + str(self._days()), '%Y%m%d').date()
 
-    def daily_amount(self):
-        return self.amount / self.days()
+    def _daily_amount(self):
+        return self.amount / self._days()
 
-    def days(self):
+    def _days(self):
         return calendar.monthrange(int(self.year_month[:4]), int(self.year_month[4:]))[1]
 
 
