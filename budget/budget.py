@@ -27,21 +27,6 @@ class BudgetService:
             total_amount += budget.overlapping_amount(period)
 
         return total_amount
-        # no cross month
-        if start.strftime('%Y%m') == end.strftime('%Y%m'):
-            filter_budgets = list(filter(lambda b: b.year_month == start.strftime('%Y%m'), budgets))
-            if len(filter_budgets) == 0:
-                return 0
-            return (end.day - start.day + 1) * filter_budgets[0].daily_amount()
-
-        else:  # cross month
-
-            total_amount = 0
-            period = Period(start, end)
-            for budget in budgets:
-                total_amount += budget.overlapping_amount(period)
-
-            return total_amount
 
 
 class Budget:
