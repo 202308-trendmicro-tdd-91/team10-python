@@ -35,9 +35,9 @@ class BudgetService:
                     overlapping_days = (budget.last_day() - start).days + 1
                 elif current_year_month == end_year_month:
                     overlapping_days = (end - budget.first_day()).days + 1
-                    # overlapping_days = end.day
                 else:
-                    overlapping_days = calendar.monthrange(current.year, current.month)[1]
+                    overlapping_days = (budget.last_day() - budget.first_day()).days + 1
+                    # overlapping_days = calendar.monthrange(current.year, current.month)[1]
                 total_amount += overlapping_days * budget.daily_amount()
                 current = current + relativedelta(months=1)
 
