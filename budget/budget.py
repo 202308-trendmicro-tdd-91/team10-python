@@ -40,19 +40,19 @@ class BudgetService:
                     continue
 
                 budget = filter_budgets[0]
-                total_amount += self.overlapping_amount(budget, period)
+                total_amount += budget.overlapping_amount(period)
                 current = current + relativedelta(months=1)
 
             return total_amount
-
-    def overlapping_amount(self, budget, period):
-        return period.overlapping_days(budget.create_period()) * budget.daily_amount()
 
 
 class Budget:
     def __init__(self, year_month, amount):
         self.year_month = year_month
         self.amount = amount
+
+    def overlapping_amount(self, period):
+        return period.overlapping_days(self.create_period()) * self.daily_amount()
 
     def create_period(self):
         return Period(self.first_day(), self.last_day())
