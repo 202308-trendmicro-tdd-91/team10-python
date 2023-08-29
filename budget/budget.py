@@ -21,12 +21,13 @@ class BudgetService:
 
     def query(self, start: date, end: date) -> float:
         budgets = self.budget_repo.get_all()
-        total_amount = 0
+        # total_amount = 0
         period = Period(start, end)
-        for budget in budgets:
-            total_amount += budget.overlapping_amount(period)
-
-        return total_amount
+        return sum(map(lambda b: b.overlapping_amount(period), budgets))
+        # for budget in budgets:
+        #     total_amount += budget.overlapping_amount(period)
+        #
+        # return total_amount
 
 
 class Budget:
