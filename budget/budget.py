@@ -52,13 +52,10 @@ class BudgetService:
                 current_year_month = current.strftime('%Y%m')
                 if current_year_month == start_year_month:
                     overlapping_days = calendar.monthrange(start.year, start.month)[1] - start.day + 1
-                    # year_month_query_days_map[current_year_month] = overlapping_days
                 elif current_year_month == end_year_month:
                     overlapping_days = end.day
-                    # year_month_query_days_map[current_year_month] = overlapping_days
                 else:
                     overlapping_days = calendar.monthrange(current.year, current.month)[1]
-                    # year_month_query_days_map[current_year_month] = overlapping_days
                 year_month_query_days_map[current_year_month] = overlapping_days
                 current = current + relativedelta(months=1)
 
